@@ -2,6 +2,7 @@ package com.tus.accounts.dto;
 
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,6 +12,7 @@ import lombok.ToString;
 @Setter 
 @ToString 
 @AllArgsConstructor 
+@NoArgsConstructor
 public class AccountsDto {
 
 	private Long accountNumber;
