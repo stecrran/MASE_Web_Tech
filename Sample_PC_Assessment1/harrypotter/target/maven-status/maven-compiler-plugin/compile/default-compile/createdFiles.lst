@@ -1,0 +1,4 @@
+com\tus\books\dao\BookRepository.class
+com\tus\books\controller\BookController.class
+com\tus\books\model\Book.class
+com\tus\books\BookManagerApp.class
