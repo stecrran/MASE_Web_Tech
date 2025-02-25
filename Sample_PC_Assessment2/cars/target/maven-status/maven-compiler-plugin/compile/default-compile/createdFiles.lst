@@ -1,0 +1,4 @@
+com\tus\cars\controller\CarController.class
+com\tus\cars\model\Car.class
+com\tus\cars\CarManagerApp.class
+com\tus\cars\dao\CarRepository.class
