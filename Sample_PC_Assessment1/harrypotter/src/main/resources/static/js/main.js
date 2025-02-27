@@ -57,23 +57,47 @@ function displayBooks(books) {
 
 // Function to create a dropdown (once) in header
 function createDropdown() {
-	if ($('#dropdownMenuButton').length === 0) {
-		var dropdown = `
-		<div class="dropdown">
-			<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-			data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			Menu
-			</button>
-				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-					<a class="dropdown-item" href="home.html">Home</a>
-					<a class="dropdown-item" href="#">About</a>
-					<a class="dropdown-item" href="#">Contact</a>
-				</div>
-		</div>
-		`;
-		$('#search').append(dropdown);
-			
-	}
+    if ($('#dropdownMenuButton').length === 0) {
+        var dropdown = `
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Menu
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#" data-action="goHome">Home</a>
+                <a class="dropdown-item" href="#" data-action="clearBooksOption">Clear Books</a>
+                <a class="dropdown-item" href="#" data-action="showContact">Contact</a>
+            </div>
+        </div>
+        `;
+        $('#search').append(dropdown);
+
+        // Attach event listener to dynamically handle dropdown selections
+        $('.dropdown-menu').on('click', '.dropdown-item', function (e) {
+            e.preventDefault(); // Prevent default link behavior
+
+            let action = $(this).data('action'); // Get the function name
+            if (typeof window[action] === "function") {
+                window[action](); // Call the function dynamically
+            }
+        });
+    }
+}
+
+// Example functions
+function goHome() {
+    alert("Navigating to Home...");
+    window.location.href = "home.html";
+}
+
+function clearBooksOption() {
+    alert("Clearing Books");
+	$('#bookList').empty();
+}
+
+function showContact() {
+    alert("Displaying Contact Section...");
 }
 
 
