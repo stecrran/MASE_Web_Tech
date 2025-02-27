@@ -19,6 +19,12 @@ section {
 	margin-bottom: 1em;	
 }
 
+.button-container { /* added */
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    gap: 10px; /* Adds space between buttons */
+    margin-top: 10px;
+}
 
 h1 { font-size: 200%; }
 h2 { font-size: 125%; }

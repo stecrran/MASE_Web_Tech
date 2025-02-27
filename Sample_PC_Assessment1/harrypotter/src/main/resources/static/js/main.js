@@ -1,4 +1,31 @@
 // using JQuery ---
+
+// load functions and event listeners
+$(document).ready(function() {
+	fetchBooks();
+	createDropdown();
+	clearAll();
+	returnAll();
+	
+	// event listener called once to avoid duplicate modals
+	$(document).on('click', '.infoButton', function () {
+		const bookId = $(this).data('id');
+		showBookDetails(bookId);
+	});
+
+	// event listener to clear books
+	$(document).on('click', '#clearBooksButton', function () {
+		$('#bookList').empty();
+	});
+
+	// event listener to restore books
+	$(document).on('click', '#restoreBooksButton', function () {
+		fetchBooks();
+	});
+
+});
+
+
 function fetchBooks() {
 	$.getJSON('http://localhost:8081/books')
 		.done(displayBooks)
@@ -27,11 +54,45 @@ function displayBooks(books) {
 
 }
 
-// event listener called once to avoid duplicate modals
-$(document).on('click', '.infoButton', function() {
-	const bookId = $(this).data('id');
-	showBookDetails(bookId);
-});
+
+// Function to create a dropdown (once) in header
+function createDropdown() {
+	if ($('#dropdownMenuButton').length === 0) {
+		var dropdown = `
+		<div class="dropdown">
+			<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+			data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			Menu
+			</button>
+				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+					<a class="dropdown-item" href="home.html">Home</a>
+					<a class="dropdown-item" href="#">About</a>
+					<a class="dropdown-item" href="#">Contact</a>
+				</div>
+		</div>
+		`;
+		$('#search').append(dropdown);
+			
+	}
+}
+
+
+function showBookDetails(bookId) {
+	const book = window.allBooks.find(b => b.id == bookId);
+	if (!book) return;
+
+	var saving = book.rrp - book.online;
+	var saving_pc = Math.round((saving / book.rrp) * 100);
+	// add book details to modal
+	$('#pic').attr('src', `images/${book.image}`);
+	$('#rrp').val(`€${book.rrp.toFixed(2)}`);
+	$('#online_price').val(`€${book.online.toFixed(2)}`);
+	$('#saving').val(`€${saving.toFixed(2)} (${saving_pc}%)`);
+
+	// open modal
+	$('#detailsModal').modal('show');
+
+}
 
 // event listener for search by series
 $(document).ready(function() {
@@ -59,24 +120,27 @@ $(document).ready(function() {
 });
 
 
-function showBookDetails(bookId) {
-	const book = window.allBooks.find(b => b.id == bookId);
-	if (!book) return;
-
-	var saving = book.rrp - book.online;
-	var saving_pc = Math.round((saving / book.rrp) * 100);
-	// add book details to modal
-	$('#pic').attr('src', `images/${book.image}`);
-	$('#rrp').val(`€${book.rrp.toFixed(2)}`);
-	$('#online_price').val(`€${book.online.toFixed(2)}`);
-	$('#saving').val(`€${saving.toFixed(2)} (${saving_pc}%)`);
-
-	// open modal
-	$('#detailsModal').modal('show');
-
+// clear all books button
+function clearAll(){
+var clearBooks = ` 
+	<div class="button-container"> <!-- using button-container for clear and restore to enforce styling -->
+	 	<button class="btn btn-warning" type="button" id="clearBooksButton">
+	 	Clear Books</button>
+	</div>
+	`;
+	$('#belowTitle').prepend(clearBooks); // append = below, prepend = above
 }
 
-// fetchBooks when page loads
-$(document).ready(function() {
-	fetchBooks();
-});
+// restore books button
+function returnAll(){
+var returnBooks = `
+	<div class="button-container">
+	 	<button class="btn btn-success" type="button" id="restoreBooksButton">
+	 	Restore Books</button>
+	</div>
+	`;
+	$('#belowTitle').prepend(returnBooks);
+}
+
+
+
